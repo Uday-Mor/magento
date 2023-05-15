@@ -1,0 +1,13 @@
+<?xml version="1.0"?> 
+<layout version="0.1.0">
+    <product_test_test> 
+        <reference name="root"> 
+            <action method="setTemplate"> 
+                <template>page/1column.phtml</template>
+            </action> 
+        </reference> 
+        <reference name="content"> 
+            <block type="test/test" name="hello" template="product/test.phtml"/> 
+        </reference> 
+    </product_test_test> 
+</layout>
