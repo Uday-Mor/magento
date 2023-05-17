@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <practice translate="title" module="practice">
+            <title>practices</title>
+            <sort_order>10</sort_order>
+            <children>
+                <practice translate="title" module="practice">
+                    <title>Manage practices</title>
+                    <action>practice/adminhtml_seven/index</action>
+                    <sort_order>0</sort_order>
+                </practice>
+            </children>
+        </practice>
+    </menu>
+</config>
