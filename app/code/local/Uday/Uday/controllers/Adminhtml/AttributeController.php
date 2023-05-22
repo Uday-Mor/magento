@@ -75,10 +75,11 @@ class Uday_Uday_Adminhtml_AttributeController extends Mage_Adminhtml_Controller_
             $model->addData($data);
         }
 
-        Mage::register('uday_attribute', $model);
+        Mage::register('entity_attribute', $model);
         // echo "<pre>";
-        // print_r($this->getLayout()->createBlock('uday/adminhtml_attribute_edit'));
-        // die();
+        // $this->getLayout()->createBlock('uday/adminhtml_attribute_edit_js')->toHtml();
+        // print_r();
+        // die;
         $this->_initAction();
 
         $this->_title($id ? $model->getName() : $this->__('New Attribute'));
@@ -86,11 +87,10 @@ class Uday_Uday_Adminhtml_AttributeController extends Mage_Adminhtml_Controller_
         $item = $id ? Mage::helper('uday')->__('Edit Product Attribute')
                     : Mage::helper('uday')->__('New Product Attribute');
 
-        $this->_addBreadcrumb($item, $item);
-        // $this->getLayout()->createBlock('uday/adminhtml_attribute_edit')->setTemplate('catalog/product/attribute/js.phtml')
-        //     ->setIsPopup((bool)$this->getRequest()->getParam('popup'));
+        // $this->getLayout()->getBlock('attribute_edit_js')->setIsPopup((bool)$this->getRequest()->getParam('popup'));
 
-        $this->_addContent($this->getLayout()->createBlock('uday/adminhtml_attribute_edit'));
+        $this->_addBreadcrumb($item, $item);
+        $this->_addContent($this->getLayout()->createBlock('uday/adminhtml_attribute_edit'))->_addLeft($this->getLayout()->createBlock('uday/adminhtml_attribute_edit_tabs'))->_addJs($this->getLayout()->createBlock('uday/adminhtml_attribute_edit_js'));
 
         $this->renderLayout();
 

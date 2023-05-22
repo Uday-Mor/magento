@@ -32,7 +32,7 @@
  * @author      Magento Core Team <core@magentocommerce.com>
  */
 
-class Mage_Adminhtml_Block_Catalog_Product_Attribute_Edit_Tab_Form extends Mage_Adminhtml_Block_Widget_Form
+class Uday_Uday_Block_Adminhtml_Attribute_Edit_Tab_Form extends Mage_Adminhtml_Block_Widget_Form
 {
 
     protected function _prepareForm()
