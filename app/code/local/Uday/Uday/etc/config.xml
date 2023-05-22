@@ -7,8 +7,8 @@
     <frontend>
         <layout>
             <updates>
-                <uday module="Uday_Uday">
-                    <file>Uday_Uday.xml</file>
+                <uday>
+                    <file>uday.xml</file>
                 </uday>
             </updates>
         </layout>
@@ -81,12 +81,5 @@
                 </args>
             </uday>
         </routers>
-         <layout>
-            <updates>
-                <uday>
-                    <file>uday.xml</file>
-                </uday>
-            </updates>
-        </layout>
     </admin>
 </config>

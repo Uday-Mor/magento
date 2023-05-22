@@ -38,7 +38,7 @@ class Uday_Uday_Block_Adminhtml_Attribute_Edit extends Mage_Adminhtml_Block_Widg
         $this->_updateButton('save', 'label', Mage::helper('uday')->__('Save Attribute'));
         $this->_updateButton('save', 'onclick', 'saveAttribute()');
 
-        if (! Mage::registry('uday_attribute')->getIsUserDefined()) {
+        if (! Mage::registry('entity_attribute')->getIsUserDefined()) {
             $this->_removeButton('delete');
         } else {
             $this->_updateButton('delete', 'label', Mage::helper('uday')->__('Delete Attribute'));

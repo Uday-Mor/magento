@@ -1,4 +1,4 @@
 <?php
-class Uday_Uday_Block_Adminhtml_Attribute_Edit_Tabs_Options extends Mage_Eav_Block_Adminhtml_Attribute_Edit_Options_Abstract
+class Uday_Uday_Block_Adminhtml_Attribute_Edit_Tab_Options extends Mage_Eav_Block_Adminhtml_Attribute_Edit_Options_Abstract
 {
 }

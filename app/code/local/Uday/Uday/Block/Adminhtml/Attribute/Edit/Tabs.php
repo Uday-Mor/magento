@@ -4,7 +4,6 @@ class Uday_Uday_Block_Adminhtml_Attribute_Edit_Tabs extends Mage_Adminhtml_Block
 
     public function __construct()
     {
-        echo "string";
         parent::__construct();
         $this->setId('uday_attribute_tabs');
         $this->setDestElementId('edit_form');
@@ -16,7 +15,7 @@ class Uday_Uday_Block_Adminhtml_Attribute_Edit_Tabs extends Mage_Adminhtml_Block
         $this->addTab('main', array(
             'label'     => Mage::helper('uday')->__('Properties'),
             'title'     => Mage::helper('uday')->__('Properties'),
-            'content'   => $this->getLayout()->createBlock('adminhtml/uday_attribute_edit_tab_main')->toHtml(),
+            'content'   => $this->getLayout()->createBlock('uday/adminhtml_attribute_edit_tab_main')->toHtml(),
             'active'    => true
         ));
 
@@ -25,7 +24,7 @@ class Uday_Uday_Block_Adminhtml_Attribute_Edit_Tabs extends Mage_Adminhtml_Block
         $this->addTab('labels', array(
             'label'     => Mage::helper('uday')->__('Manage Label / Options'),
             'title'     => Mage::helper('uday')->__('Manage Label / Options'),
-            'content'   => $this->getLayout()->createBlock('adminhtml/uday_attribute_edit_tab_options')->toHtml(),
+            'content'   => $this->getLayout()->createBlock('uday/adminhtml_attribute_edit_tab_options')->toHtml(),
         ));
         
         /*if ('select' == $model->getFrontendInput()) {

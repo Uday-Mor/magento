@@ -1,14 +1,15 @@
 <?php
-class Uday_Uday_Block_Adminhtml_Attribute_Edit_Tabs_Main
+
+class Uday_Uday_Block_Adminhtml_Attribute_Edit_Tab_Main
     extends Mage_Eav_Block_Adminhtml_Attribute_Edit_Main_Abstract
 {
     protected function _prepareForm()
     {
         parent::_prepareForm();
         $attributeObject = $this->getAttributeObject();
-        /* @var $form Varien_Data_Form */
+
         $form = $this->getForm();
-        /* @var $fieldset Varien_Data_Form_Element_Fieldset */
+
         $fieldset = $form->getElement('base_fieldset');
 
         $fieldset->getElements()
@@ -63,16 +64,16 @@ class Uday_Uday_Block_Adminhtml_Attribute_Edit_Tabs_Main
         $yesnoSource = Mage::getModel('adminhtml/system_config_source_yesno')->toOptionArray();
 
         $scopes = array(
-            Uday_Uday_Model_Resource_Eav_Attribute::SCOPE_STORE =>Mage::helper('uday')->__('Store View'),
-            Uday_Uday_Model_Resource_Eav_Attribute::SCOPE_WEBSITE =>Mage::helper('uday')->__('Website'),
-            Uday_Uday_Model_Resource_Eav_Attribute::SCOPE_GLOBAL =>Mage::helper('uday')->__('Global'),
+            Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_STORE =>Mage::helper('uday')->__('Store View'),
+            Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_WEBSITE =>Mage::helper('uday')->__('Website'),
+            Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL =>Mage::helper('uday')->__('Global'),
         );
 
         if (
             $attributeObject->getAttributeCode() == 'status'
             || $attributeObject->getAttributeCode() == 'tax_class_id'
         ) {
-            unset($scopes[Uday_Uday_Model_Resource_Eav_Attribute::SCOPE_STORE]);
+            unset($scopes[Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_STORE]);
         }
 
         $fieldset->addField('is_global', 'select', array(
@@ -83,16 +84,16 @@ class Uday_Uday_Block_Adminhtml_Attribute_Edit_Tabs_Main
             'values'=> $scopes
         ), 'attribute_code');
 
-        // $fieldset->addField('apply_to', 'apply', array(
-        //     'name'        => 'apply_to[]',
-        //     'label'       => Mage::helper('uday')->__('Apply To'),
-        //     'values'      => Mage_Catalog_Model_Product_Type::getOptions(),
-        //     'mode_labels' => array(
-        //         'all'     => Mage::helper('uday')->__('All Product Types'),
-        //         'custom'  => Mage::helper('uday')->__('Selected Product Types')
-        //     ),
-        //     'required'    => true
-        // ), 'frontend_class');
+        $fieldset->addField('apply_to', 'apply', array(
+            'name'        => 'apply_to[]',
+            'label'       => Mage::helper('uday')->__('Apply To'),
+            'values'      => Mage_Catalog_Model_Product_Type::getOptions(),
+            'mode_labels' => array(
+                'all'     => Mage::helper('uday')->__('All Product Types'),
+                'custom'  => Mage::helper('uday')->__('Selected Product Types')
+            ),
+            'required'    => true
+        ), 'frontend_class');
 
         $fieldset->addField('is_configurable', 'select', array(
             'name' => 'is_configurable',
@@ -216,7 +217,7 @@ class Uday_Uday_Block_Adminhtml_Attribute_Edit_Tabs_Main
             ->addFieldDependence('html_allowed_on_front', 'wysiwyg_enabled', '0')
         );
 
-        Mage::dispatchEvent('adminhtml_uday_attribute_edit_prepare_form', array(
+        Mage::dispatchEvent('adminhtml_catalog_product_attribute_edit_prepare_form', array(
             'form'      => $form,
             'attribute' => $attributeObject
         ));
@@ -229,10 +230,10 @@ class Uday_Uday_Block_Adminhtml_Attribute_Edit_Tabs_Main
      *
      * @return array
      */
-    // protected function _getAdditionalElementTypes()
-    // {
-    //     return array(
-    //         'apply'         => Mage::getConfig()->getBlockClassName('adminhtml/catalog_product_helper_form_apply'),
-    //     );
-    // }
+    protected function _getAdditionalElementTypes()
+    {
+        return array(
+            'apply'         => Mage::getConfig()->getBlockClassName('adminhtml/catalog_product_helper_form_apply'),
+        );
+    }
 }
