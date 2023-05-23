@@ -70,6 +70,17 @@
                   <class>Uday_Uday_Helper</class>
             </uday>
         </helpers>
+        <events>
+            <uday_save_after>
+                <observers>
+                    <uday_observer>
+                        <type>singleton</type>
+                        <class>uday/observer</class>
+                        <method>handleSaveAfter</method>
+                    </uday_observer>
+                </observers>
+            </uday_save_after>
+        </events>
     </global>
     <admin>
         <routers>
