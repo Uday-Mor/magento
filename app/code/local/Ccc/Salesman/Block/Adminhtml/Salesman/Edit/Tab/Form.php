@@ -26,10 +26,14 @@ class Ccc_Salesman_Block_Adminhtml_Salesman_Edit_Tab_Form extends Mage_Adminhtml
             'name' => 'salesmen[email]',
         ));
 
-        $fieldset->addField('gender', 'text', array(
-            'label' => Mage::helper('salesman')->__('Gender'),
+        $fieldset->addField('gender', 'select', array(
+            'label' => Mage::helper('uday')->__('Gender'),
             'required' => false,
-            'name' => 'salesmen[gender]',
+            'name' => 'uday[gender]',
+            'values'    => array(
+                    'Approved' => 'Approved',
+                    'Denied'   => 'Denied'
+                )
         ));
 
         $fieldset->addField('mobile', 'text', array(
