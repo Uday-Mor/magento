@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <config>
     <modules>
-        <Ccc_Vendor>
-            <active>false</active>
+        <UM_Vendor>
+            <active>true</active>
             <codePool>local</codePool>
-        </Ccc_Vendor>
+        </UM_Vendor>
     </modules>
 </config>
