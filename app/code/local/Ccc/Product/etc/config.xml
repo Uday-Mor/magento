@@ -65,6 +65,11 @@
             <product>
                 <class>Ccc_Product_Helper</class>
             </product>
+            <product>
+                <rewrite>
+                    <data>Ccc_Product_Helper_Datanew</data>
+                </rewrite>
+            </product>
         </helpers>
         <events>
             <product_prepare_save>
