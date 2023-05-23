@@ -54,12 +54,28 @@
             <product>
                 <class>Ccc_Product_Block</class>
             </product>
+            <product>
+                <rewrite>
+                    <adminhtml_product>Ccc_Product_Block_Adminhtml_Productnew</adminhtml_product>
+                </rewrite>
+            </product>
         </blocks>
         <helpers>
             <product>
                 <class>Ccc_Product_Helper</class>
             </product>
         </helpers>
+        <events>
+            <product_prepare_save>
+                <observers>
+                    <Ccc_Product_Model_Observer>
+                        <type>singleton</type>
+                        <class>product/observer</class>
+                        <method>saveProductObserve</method>
+                    </Ccc_Product_Model_Observer>
+                </observers>
+            </product_prepare_save>
+        </events>
     </global>
     <admin>
         <routers>
