@@ -69,6 +69,7 @@ class Ccc_Product_Adminhtml_ProductController extends Mage_Adminhtml_Controller_
                 $model->setUpdateTime(now());
             }
              
+            Mage::dispatchEvent('product_prepare_save', array('page' => $model, 'request' => $this->getRequest()));
             $model->save();
             Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('product')->__('Product was successfully saved'));
             Mage::getSingleton('adminhtml/session')->setFormData(false);
