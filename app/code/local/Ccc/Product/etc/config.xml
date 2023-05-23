@@ -57,6 +57,7 @@
             <product>
                 <rewrite>
                     <adminhtml_product>Ccc_Product_Block_Adminhtml_Productnew</adminhtml_product>
+                     <adminhtml_product>Ccc_Product_Block_Adminhtml_Productnew</adminhtml_product>
                 </rewrite>
             </product>
         </blocks>

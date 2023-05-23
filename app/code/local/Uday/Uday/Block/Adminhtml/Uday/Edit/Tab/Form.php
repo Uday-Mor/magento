@@ -26,11 +26,27 @@ class Uday_Uday_Block_Adminhtml_Uday_Edit_Tab_Form extends Mage_Adminhtml_Block_
             'name' => 'uday[email]',
         ));
 
-        $fieldset->addField('gender', 'text', array(
+        $fieldset->addField('gender', 'select', array(
             'label' => Mage::helper('uday')->__('Gender'),
             'required' => false,
             'name' => 'uday[gender]',
+            'values'    => array(
+                    'Approved' => 'Approved',
+                    'Denied'   => 'Denied'
+                )
         ));
+
+        // $fieldset->addField(
+        //     'gender',
+        //     'select',
+        //     array(
+        //         'id'    => 'lazadaCategory',
+        //         'label'  => Mage::helper('test_sellercenter')->__('Category '),
+        //         'name'   => 'status',
+        //         'values' => Mage::helper('test_sellercenter/dropdown')->getLazadaCategories(),
+        //         'class' => 'required-entry',
+        //     )
+        // );
 
         $fieldset->addField('mobile', 'text', array(
             'label' => Mage::helper('uday')->__('Mobile'),

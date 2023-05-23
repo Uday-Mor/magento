@@ -62,10 +62,10 @@ class Uday_Uday_Adminhtml_UdayController extends Mage_Adminhtml_Controller_Actio
 	public function saveAction()
     {
         try {
-            $model = Mage::getModel('sample/sample');
-            $addressModel = Mage::getModel('sample/sample_address');
-            $data = $this->getRequest()->getPost('salesmen');
-            $addressData = $this->getRequest()->getPost('address');
+            $model = Mage::getModel('uday/uday');
+            // $addressModel = Mage::getModel('sample/sample_address');
+            $data = $this->getRequest()->getPost('uday');
+            // $addressData = $this->getRequest()->getPost('address');
 
             $sampleId = $this->getRequest()->getParam('id');
             if (!$sampleId)
@@ -82,10 +82,15 @@ class Uday_Uday_Adminhtml_UdayController extends Mage_Adminhtml_Controller_Actio
                 $model->setUpdateTime(now());
             }
 
+
+            echo "<pre>";
+            print_r($model);
+            die;
+
             $model->save();
             if ($model->save()) {
                 if ($sampleId) {
-                    $addressModel->load($sampleId,'sample_id');
+                    $addressModel->load($sampleId,'id');
                 }
 
                 $addressModel->setData(array_merge($addressModel->getData(),$addressData));
@@ -93,7 +98,7 @@ class Uday_Uday_Adminhtml_UdayController extends Mage_Adminhtml_Controller_Actio
                 $addressModel->save();
             }
             
-            Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('sample')->__('sample was successfully saved'));
+            Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('uday')->__('sample was successfully saved'));
             Mage::getSingleton('adminhtml/session')->setFormData(false);
              
             if ($this->getRequest()->getParam('back')) {
