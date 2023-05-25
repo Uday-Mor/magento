@@ -81,10 +81,16 @@ class UM_Vendor_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_Widget_
             'index'     => 'email'
         ));
 
+        $this->addColumn('gender', array(
+            'header'    => Mage::helper('vendor')->__('Gender'),
+            'align'     => 'left',
+            'index'     => 'gender',
+            'renderer'  => 'UM_Vendor_Block_Adminhtml_Vendor_Grid_Renderer_Gender'
+        ));
+
         return parent::_prepareColumns();
     }
 
-    
     public function getRowUrl($row)
     {
         return $this->getUrl('*/*/edit', array('vendor_id' => $row->getId()));

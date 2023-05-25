@@ -1,8 +1,9 @@
 <?php
-class Uday_Uday_Model_Resource_Uday_Collection extends Mage_Core_Model_Resource_Db_Collection_Abstract
+class Uday_Uday_Model_Resource_Uday_Collection extends Mage_Catalog_Model_Resource_Collection_Abstract
 {
-    protected function _construct()
-    {
-        $this->_init('uday/uday');
-    }
+	public function __construct()
+	{
+		$this->setEntity('uday');
+		parent::__construct();	
+	}
 }

@@ -1,170 +1,113 @@
-<?php
-/**
- * 
- */
+<?php 
+
 class Uday_Uday_Adminhtml_UdayController extends Mage_Adminhtml_Controller_Action
 {
-
-	protected function _initAction()
-    {
-        $this->loadLayout()
-            ->_setActiveMenu('uday/uday')
-            ->_addBreadcrumb(Mage::helper('uday')->__('Uday'), Mage::helper('uday')->__('Uday'))
-            ->_addBreadcrumb(Mage::helper('uday')->__('Manage Salesmen'), Mage::helper('uday')->__('Manage'))
-        ;
-        return $this;
-    }
-
-	public function indexAction()
-	{
-		$this->_title($this->__('Sample'))
-             ->_title($this->__('Manage'));
-
-        $this->loadLayout();
-        $this->_addContent($this->getLayout()->createBlock('uday/adminhtml_uday', 'uday'));
-        $this->renderLayout();
+	public function indexAction(){
+		$this->loadLayout();
+		$this->_setActiveMenu('uday');
+		$this->_title('Uday Grid');
+		$this->_addContent($this->getLayout()->createBlock('uday/adminhtml_uday'));
+		$this->renderLayout();
 	}
 
-	public function newAction()
-	{
+	protected function _initUday()
+    {
+        $this->_title($this->__('Uday'))
+            ->_title($this->__('Manage Udays'));
+
+        $udayId = (int) $this->getRequest()->getParam('id');
+        $uday   = Mage::getModel('uday/uday')
+            ->setStoreId($this->getRequest()->getParam('store', 0))
+            ->load($udayId);
+
+        if (!$udayId) {
+            if ($setId = (int) $this->getRequest()->getParam('set')) {
+                $uday->setAttributeSetId($setId);
+            }
+        }
+
+        Mage::register('current_uday', $uday);
+        Mage::getSingleton('cms/wysiwyg_config')->setStoreId($this->getRequest()->getParam('store'));
+        return $uday;
+    }
+
+	public function newAction(){
 		$this->_forward('edit');
 	}
 
-    public function editAction()
-    {
-        $id = $this->getRequest()->getParam('id');
-        $model = Mage::getModel('uday/uday')->load($id);
-        $addressModel = Mage::getModel('uday/uday_address')->load($id,'id');
-        if ($model->getId() || $id == 0)
-        {
-            $data = Mage::getSingleton('adminhtml/session')->getFormData(true);
-            if (!empty($data))
-            {
-                $model->setData($data);
-            }
-            Mage::register('uday_data', $model);
-            Mage::register('address_data', $addressModel);
-
-            $this->loadLayout();
-            $this->_setActiveMenu('uday/uday');
-            $this->_addBreadcrumb(Mage::helper('adminhtml')->__('Manager'), Mage::helper('adminhtml')->__('Manager'));
-            $this->_addBreadcrumb(Mage::helper('adminhtml')->__('News'), Mage::helper('adminhtml')->__('News'));
-             
-            $this->_addContent($this->getLayout()->createBlock(' uday/adminhtml_uday_edit'))
-                    ->_addLeft($this->getLayout()
-                    ->createBlock('uday/adminhtml_uday_edit_tabs'));
-            $this->renderLayout();
-        }else{
-            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('uday')->__('Sample does not exist'));
+	public function editAction(){ 
+		$udayId = (int) $this->getRequest()->getParam('id');
+        $uday   = $this->_initUday();
+        
+        if ($udayId && !$uday->getId()) {
+            $this->_getSession()->addError(Mage::helper('uday')->__('This uday no longer exists.'));
             $this->_redirect('*/*/');
+            return;
         }
-    }
+
+        $this->_title($uday->getName());
+
+        $this->loadLayout();
+
+        $this->_setActiveMenu('uday/uday');
+
+        $this->getLayout()->getBlock('head')->setCanLoadExtJs(true);
+
+        $this->renderLayout();
+	}
+
 	public function saveAction()
     {
         try {
-            $model = Mage::getModel('uday/uday');
-            // $addressModel = Mage::getModel('sample/sample_address');
-            $data = $this->getRequest()->getPost('uday');
-            // $addressData = $this->getRequest()->getPost('address');
+            $setId = (int) $this->getRequest()->getParam('set');
+            $udayData = $this->getRequest()->getPost('account');            
+            $uday = Mage::getSingleton('uday/uday');
+            $uday->setAttributeSetId($setId);
 
-            $sampleId = $this->getRequest()->getParam('id');
-            if (!$sampleId)
-            {
-                $model->setData($data)->setId($this->getRequest()->getParam('sample_id'));
-            }
-
-            $model->setData($data)->setId($this->getRequest()->getParam('id'));
-            if ($model->getCreatedTime() == NULL || $model->getUpdateTime() == NULL)
-            {
-                $model->setCreatedTime(now())->setUpdateTime(now());
-            } 
-            else {
-                $model->setUpdateTime(now());
-            }
-
-
-            echo "<pre>";
-            print_r($model);
-            die;
-
-            $model->save();
-            if ($model->save()) {
-                if ($sampleId) {
-                    $addressModel->load($sampleId,'id');
+            if ($udayId = $this->getRequest()->getParam('id')) {
+                if (!$uday->load($udayId)) {
+                    throw new Exception("No Row Found");
                 }
-
-                $addressModel->setData(array_merge($addressModel->getData(),$addressData));
-                $addressModel->sample_id = $model->sample_id;
-                $addressModel->save();
+                Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
             }
             
-            Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('uday')->__('sample was successfully saved'));
-            Mage::getSingleton('adminhtml/session')->setFormData(false);
-             
-            if ($this->getRequest()->getParam('back')) {
-                $this->_redirect('*/*/edit', array('id' => $model->getId()));
-                return;
-            }
-            $this->_redirect('*/*/');
-            return;
-        } catch (Exception $e) {
-            Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
-            Mage::getSingleton('adminhtml/session')->setFormData($data);
-            $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('sample_id')));
-            return;
-        }
+            $uday->addData($udayData);
 
-        Mage::getSingleton('adminhtml/session')->addError(Mage::helper('sample')->__('Unable to find sample to save'));
-        $this->_redirect('*/*/');
+            $uday->save();
+
+            Mage::getSingleton('core/session')->addSuccess("uday data added.");
+            $this->_redirect('*/*/');
+
+        } catch (Exception $e) {
+            Mage::getSingleton('core/session')->addError($e->getMessage());
+            $this->_redirect('*/*/');
+        }
     }
 
     public function deleteAction()
     {
-        if( $this->getRequest()->getParam('sample_id') > 0 ) {
-            try {
-                $model = Mage::getModel('sample/sample');
-                 
-                $model->setId($this->getRequest()->getParam('sample_id'))
-                ->delete();
-                 
-                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('sample was successfully deleted'));
-                $this->_redirect('*/*/');
-            } catch (Exception $e) {
-                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
-                $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('sample_id')));
+        try {
+
+            $udayModel = Mage::getModel('uday/uday');
+
+            if (!($udayId = (int) $this->getRequest()->getParam('id')))
+                throw new Exception('Id not found');
+
+            if (!$udayModel->load($udayId)) {
+                throw new Exception('uday does not exist');
             }
+
+            if (!$udayModel->delete()) {
+                throw new Exception('Error in delete record', 1);
+            }
+
+            Mage::getSingleton('core/session')->addSuccess($this->__('The uday has been deleted.'));
+
+        } catch (Exception $e) {
+            Mage::logException($e);
+            $Mage::getSingleton('core/session')->addError($e->getMessage());
         }
+        
         $this->_redirect('*/*/');
-    }
-
-    public function massDeleteAction()
-    {
-        $salesmenIds = $this->getRequest()->getParam('sample');
-        if(!is_array($salesmenIds)) {
-             Mage::getSingleton('adminhtml/session')->addError(Mage::helper('adminhtml')->__('Please select sample(s).'));
-        } else {
-            try {
-                $sample = Mage::getModel('sample/sample');
-                foreach ($salesmenIds as $sampleId) {
-                    $sample->reset()
-                        ->load($sampleId)
-                        ->delete();
-                }
-                Mage::getSingleton('adminhtml/session')->addSuccess(
-                    Mage::helper('adminhtml')->__('Total of %d record(s) were deleted.', count($salesmenIds))
-                );
-            } catch (Exception $e) {
-                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
-            }
-        }
-
-        $this->_redirect('*/*/index');
-    }
-
-    public function massUpdateAction()
-    {
-        echo 111;
-        echo "<pre>";
-        print_r($_POST);
     }
 }
