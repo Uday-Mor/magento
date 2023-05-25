@@ -1,14 +1,27 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <layout>
-    <adminhtml_attribute_edit>
-        <reference name="left">
-            <block type="adminhtml/attribute_edit_tabs" name="attribute_edit_tabs"></block>
-        </reference>
+    <uday_adminhtml_uday_attribute_edit>
         <reference name="content">
-            <block type="adminhtml/attribute_edit" name="attribute_edit_content"></block>
+            <block type="uday/adminhtml_uday_attribute_edit" name="udayAttributeEdit"/>
+        </reference>
+         <reference name="left">
+            <block type="uday/adminhtml_uday_attribute_edit_tabs" name="uday_edit_tabs"></block>
         </reference>
         <reference name="js">
             <block type="adminhtml/template" name="attribute_edit_js" template="uday/attribute/js.phtml"></block>
         </reference>
-    </adminhtml_attribute_edit>
+    </uday_adminhtml_uday_attribute_edit>
+    
+    <uday_adminhtml_uday_edit>
+        <reference name="content">
+            <block type="uday/adminhtml_uday_edit" name="udayEdit"/>
+        </reference>
+        <reference name="left">
+            <block type="uday/adminhtml_uday_edit_Tabs" name="udayEditTabs"/>
+        </reference>
+        <reference name="js">
+            <block type="adminhtml/catalog_product_edit_js" template="catalog/product/js.phtml" name="catalog_product_js"></block>
+            <block type="core/template" template="catalog/wysiwyg/js.phtml"/>
+        </reference>
+    </uday_adminhtml_uday_edit>   
 </layout>
