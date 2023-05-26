@@ -48,7 +48,9 @@ class Ccc_Practice_Adminhtml_SevenController extends Mage_Core_Controller_Front_
 
         print_r($mage->objects());
         // output object of Varien_Event_Collection 
-
-
+        die;
+//         $adapter = Mage::getSingleton('core/resource')->getConnection('core_read');
+//         print_r($adapter->getColumnDefinitionFromDescribe('product','product_id'));
+//         print_r(get_class_methods($adapter));
     }
 }
