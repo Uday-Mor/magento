@@ -2,7 +2,7 @@
 <config>
     <modules>
         <UM_Vendor>
-            <active>true</active>
+            <active>false</active>
             <codePool>local</codePool>
         </UM_Vendor>
     </modules>
