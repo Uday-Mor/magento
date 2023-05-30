@@ -32,12 +32,16 @@ class Uday_Idx_Model_Idx extends Mage_Core_Model_Abstract
             ->fetchPairs($brandCollection->getSelect()->columns(['brand_id','name']));
 
         $newBrands = array_diff($idxBrandNames, $brandNames);
-        foreach ($newBrands as $brandName) {
-            $brand = Mage::getModel('brand/brand');
-            $brand->name = $brandName;
-            $brand->save();
+        $resource = Mage::getSingleton('core/resource');
+        $writeConnection = $resource->getConnection('core_write');
+        $tableName = $resource->getTableName('brand');
+        $data = [];
+        foreach ($newBrands as $id => $name) {
+            $row = ['name'=>$name];
+            array_push($data, $row);
         }
 
+        $writeConnection->insertMultiple($tableName, $data);
         $newBrandNames = $brandCollection->getConnection()
             ->fetchPairs($brandCollection->getSelect()->columns(['brand_id','name']));
         return $newBrandNames;    
@@ -50,10 +54,17 @@ class Uday_Idx_Model_Idx extends Mage_Core_Model_Abstract
             ->fetchPairs($collection->getSelect()->columns(['collection_id','name']));
 
         $newCollectios = array_diff($idxCollectionNames, $collectionName);
-        foreach ($newCollectios as $collectionName) {
-            $collectionmodel = Mage::getModel('collection/collection');
-            $collectionmodel->name = $collectionName;
-            $collectionmodel->save();
+        $resource = Mage::getSingleton('core/resource');
+        $writeConnection = $resource->getConnection('core_write');
+        $tableName = $resource->getTableName('collection');
+        $data = null;
+        foreach ($newCollectios as $id => $name) {
+            $row = ['name'=>$name];
+            array_push($data, $row);
+        }
+        
+        if (!$data) {
+            $writeConnection->insertMultiple($tableName, $data);
         }
 
         $newCollectionNames = $collection->getConnection()
@@ -70,12 +81,19 @@ class Uday_Idx_Model_Idx extends Mage_Core_Model_Abstract
         }
 
         $newProducts = array_diff($idxSkus, $productSkus);
-        foreach ($newProducts as $productSku) {
-            $productModel = Mage::getModel('product/product');
-            $productModel->sku = $productSku;
-            $productModel->save();
+        $resource = Mage::getSingleton('core/resource');
+        $writeConnection = $resource->getConnection('core_write');
+        $tableName = $resource->getTableName('product');
+        $data = null;
+        foreach ($newProducts as $id => $sku) {
+            $row = ['sku'=>$sku];
+            array_push($data, $row);
         }
 
+        if ($data) {
+            $writeConnection->insertMultiple($tableName, $data);
+        }
+        
         $productCollection = Mage::getModel('product/product')->getCollection();
         foreach ($productCollection as $product) {
             $productSkus[$product->getData('product_id')] = $product->getData('sku');

@@ -69,37 +69,32 @@ class Uday_Idx_Adminhtml_IdxController extends Mage_Adminhtml_Controller_Action
         if (isset($_FILES['csv']['tmp_name']) && !empty($_FILES['csv']['tmp_name'])) {
             $csvFile = $_FILES['csv']['tmp_name'];
             $csvData = array_map('str_getcsv', file($csvFile));
-
-            // Remove the header row
+            $columns = $csvData[0];
             unset($csvData[0]);
+            $tableName = Mage::getSingleton('core/resource')->getTableName('import_product_idx');
+            $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
             $counter = 0;
-
-            $importModel = Mage::getModel('idx/idx');
             foreach ($csvData as $data) {
                 $counter ++;
-                $importModel->setData('sku', $data[0]);
-                $importModel->setData('name', $data[1]);
-                $importModel->setData('price', $data[2]);
-                $importModel->setData('cost', $data[3]);
-                $importModel->setData('quantity', $data[4]);
-                $importModel->setData('brand', $data[5]);
-                $importModel->setData('collection', $data[6]);
-                $importModel->setData('description', $data[7]);
-                $importModel->setData('status', $data[8]);
-                $importModel->setData('created_at', now());
-                // $importModel->setData('updated_at', $data[10]);
-
-                try {
-                    $importModel->setId(null); // Set the ID as null to avoid update query
-                    $importModel->save();
-                } catch (Exception $e) {
-                    Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
-                }
+                $row['sku'] = $data[0];
+                $row[$columns[1]] =  $data[1];
+                $row[$columns[2]] =  $data[2];
+                $row[$columns[3]] =  $data[3];
+                $row[$columns[4]] =  $data[4];
+                $row[$columns[5]] =  $data[5];
+                $row[$columns[6]] =  $data[6];
+                $row[$columns[7]] =  $data[7];
+                $row[$columns[8]] =  $data[8];
+                $query = $connection->insertOnDuplicate(
+                    $tableName,
+                    $row,
+                    array_keys($row)                
+                );
             }
 
-             Mage::getSingleton('adminhtml/session')->addSuccess(
-                    Mage::helper('adminhtml')->__('Total of %d record(s) were added.', $counter)
-                );
+            Mage::getSingleton('adminhtml/session')->addSuccess(
+                Mage::helper('adminhtml')->__('Total of %d record(s) were saved.', $counter)
+            );
         } else {
             Mage::getSingleton('adminhtml/session')->addError('No CSV file uploaded.');
         }
@@ -186,13 +181,15 @@ class Uday_Idx_Adminhtml_IdxController extends Mage_Adminhtml_Controller_Action
             $idxCollection = $idx->getCollection();
             foreach ($idxCollection as $idx) {
                 if (!$idx->checkBrand()) {
-                    Mage::getSingleton('adminhtml/session')->addNotice('Brand is not fine');
+                    Mage::getSingleton('adminhtml/session')->addError('Brand is not fine');
                     $this->_redirect('*/*/');
+                    return;
                 }
 
                 if (!$idx->checkCollection()) {
-                    Mage::getSingleton('adminhtml/session')->addNotice('Collection is not fine');                    
+                    Mage::getSingleton('adminhtml/session')->addError('Collection is not fine');                    
                     $this->_redirect('*/*/');
+                    return;
                 }
             }
 
