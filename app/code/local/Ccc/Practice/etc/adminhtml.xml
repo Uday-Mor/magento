@@ -7,7 +7,7 @@
             <children>
                 <practice translate="title" module="practice">
                     <title>Manage practices</title>
-                    <action>practice/adminhtml_seven/index</action>
+                    <action>practice/adminhtml_query/index</action>
                     <sort_order>0</sort_order>
                 </practice>
             </children>
