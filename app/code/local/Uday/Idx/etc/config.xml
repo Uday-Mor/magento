@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Uday_Idx>
-            <version>0.1.0</version>
+            <version>0.1.1</version>
         </Uday_Idx>
     </modules>
      <frontend>

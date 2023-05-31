@@ -49,56 +49,110 @@ class Uday_Idx_Model_Idx extends Mage_Core_Model_Abstract
 
     public function updateMainCollection($idxCollectionNames)
     {
-        $collection = Mage::getModel('collection/collection')->getCollection();
-        $collectionName = $collection->getConnection()
-            ->fetchPairs($collection->getSelect()->columns(['collection_id','name']));
-
-        $newCollectios = array_diff($idxCollectionNames, $collectionName);
-        $resource = Mage::getSingleton('core/resource');
-        $writeConnection = $resource->getConnection('core_write');
-        $tableName = $resource->getTableName('collection');
-        $data = null;
-        foreach ($newCollectios as $id => $name) {
-            $row = ['name'=>$name];
-            array_push($data, $row);
+        $attribute = Mage::getModel('catalog/resource_eav_attribute')->loadByCode('catalog_product','collection');
+        $options = $attribute->getSource()->getAllOptions();
+        $existOption = array_filter(array_column($options,'label'));
+        $newOptions = array_diff($idxCollectionNames, $existOption);
+        if($newOptions){
+            foreach ($newOptions as $key => $value) {
+                $option['attribute_id'] = $attribute->getId();
+                $option['value'] = array(0 => array($value));
+                $option['label'] = $value;
+                $setup = new Mage_Eav_Model_Entity_Setup('core_setup');
+                $setup->addAttributeOption($option);
+            }
         }
-        
-        if (!$data) {
-            $writeConnection->insertMultiple($tableName, $data);
-        }
-
-        $newCollectionNames = $collection->getConnection()
-            ->fetchPairs($collection->getSelect()->columns(['collection_id','name']));
-        return $newCollectionNames;    
     }
 
     public function updateMainProduct($idxSkus)
     {
 
-        $productCollection = Mage::getModel('product/product')->getCollection();
+        $productCollection = Mage::getModel('catalog/product')->getCollection();
         foreach ($productCollection as $product) {
-            $productSkus[$product->getData('product_id')] = $product->getData('sku');
+            $productSkus[$product->getData('entity_id')] = $product->getData('sku');
         }
 
         $newProducts = array_diff($idxSkus, $productSkus);
         $resource = Mage::getSingleton('core/resource');
         $writeConnection = $resource->getConnection('core_write');
-        $tableName = $resource->getTableName('product');
-        $data = null;
+        $tableName = $resource->getTableName('catalog_product_entity');
         foreach ($newProducts as $id => $sku) {
-            $row = ['sku'=>$sku];
-            array_push($data, $row);
+            $row[] = [ 'sku'=>$sku,
+                    'type_id'=>'simple',
+                    'entity_type_id'=>4,
+                    'attribute_set_id'=>4,
+                    'created_at'=>now()];
         }
 
-        if ($data) {
-            $writeConnection->insertMultiple($tableName, $data);
+        if ($row) {
+            $writeConnection->insertMultiple($tableName, $row);
         }
         
-        $productCollection = Mage::getModel('product/product')->getCollection();
-        foreach ($productCollection as $product) {
-            $productSkus[$product->getData('product_id')] = $product->getData('sku');
-        }
-        return $productSkus;    
+        return true;    
     }
 
+    public function updateBrandId()
+    {
+        $resource = Mage::getSingleton('core/resource');
+        $connection = $resource->getConnection('core_write');
+        $sourceTableName = $resource->getTableName('brand');
+        $destinationTableName = $resource->getTableName('import_product_idx');
+
+        $query = "UPDATE $destinationTableName AS d
+                  INNER JOIN $sourceTableName AS s ON d.brand = s.name
+                  SET d.brand_id = s.brand_id";
+        $connection->query($query);
+        return true;
+    }
+
+    public function updateCollectionId()
+    {
+        $resource = Mage::getSingleton('core/resource');
+        $connection = $resource->getConnection('core_write');
+        $sourceTableName = $resource->getTableName('eav_attribute_option_value');
+        $destinationTableName = $resource->getTableName('import_product_idx');
+
+        $query = "UPDATE $destinationTableName AS d
+                  INNER JOIN $sourceTableName AS s ON d.collection = s.value
+                  SET d.collection_id = s.option_id";
+        $connection->query($query);
+        return true;
+    }
+
+    public function updateProductId()
+    {
+        $resource = Mage::getSingleton('core/resource');
+        $connection = $resource->getConnection('core_write');
+        $sourceTableName = $resource->getTableName('catalog_product_entity');
+        $destinationTableName = $resource->getTableName('import_product_idx');
+
+        $query = "UPDATE $destinationTableName AS d
+                  INNER JOIN $sourceTableName AS s ON d.sku = s.sku
+                  SET d.product_id = s.entity_id";
+        $connection->query($query);
+        return true;
+    }
+
+    public function updateProductData()
+    {
+        $resource = Mage::getSingleton('core/resource');
+        $connection = $resource->getConnection('core_write');
+        $sourceTableName = $resource->getTableName('import_product_idx');
+        $destinationTableName = $resource->getTableName('cataloginventory_stock_item');
+
+        $query = "INSERT INTO {$destinationTableName} (product_id, qty, stock_id)
+                        SELECT product_id, quantity , 1
+                        FROM {$sourceTableName}";
+        // $connection->query($query);
+        $destinationTableName = $resource->getTableName('catalog_product_entity_int');
+        $query = "INSERT INTO {$destinationTableName} (entity_type_id, attribute_id, store_id,entity_id,value)
+                        SELECT 4 , 98 , 0 , product_id , status
+                        FROM {$sourceTableName}";
+        $connection->query($query);
+        $query = "INSERT INTO {$destinationTableName} (entity_type_id, attribute_id, store_id,entity_id,value)
+                        SELECT 4 , 104 , 0 , product_id , 4
+                        FROM {$sourceTableName}";
+        $connection->query($query);
+        return true;
+    }
 }
