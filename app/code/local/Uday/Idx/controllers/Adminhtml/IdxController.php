@@ -67,12 +67,13 @@ class Uday_Idx_Adminhtml_IdxController extends Mage_Adminhtml_Controller_Action
     public function importAction()
     {
         if (isset($_FILES['csv']['tmp_name']) && !empty($_FILES['csv']['tmp_name'])) {
+            $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
+            $tableName = Mage::getSingleton('core/resource')->getTableName('import_product_idx');
+            $connection->truncate($tableName);
             $csvFile = $_FILES['csv']['tmp_name'];
             $csvData = array_map('str_getcsv', file($csvFile));
             $columns = $csvData[0];
             unset($csvData[0]);
-            $tableName = Mage::getSingleton('core/resource')->getTableName('import_product_idx');
-            $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
             $counter = 0;
             foreach ($csvData as $data) {
                 $counter ++;
@@ -126,16 +127,7 @@ class Uday_Idx_Adminhtml_IdxController extends Mage_Adminhtml_Controller_Action
             }
 
             $newBrands = $idx->updateMainBrand(array_unique($idxBrandNames));
-            foreach ($idxCollection as $idx) {
-                $idxBrandName = $idx->getData('brand');
-                $brandId = array_search($idxBrandName,$newBrands);
-                $resource = Mage::getSingleton('core/resource');
-                $connection = $resource->getConnection('core_write');
-                $tableName = $resource->getTableName('import_product_idx');
-                $condition = '`index` = '.$idx->index;
-                $query = "UPDATE `{$tableName}` SET `brand_id` = {$brandId} WHERE {$condition}";
-                $connection->query($query); 
-            }
+            $idx->updateBrandId();
 
             Mage::getSingleton('adminhtml/session')->addSuccess('Brand is fine now');
             $this->_redirect('*/*/');
@@ -156,16 +148,7 @@ class Uday_Idx_Adminhtml_IdxController extends Mage_Adminhtml_Controller_Action
             }
 
             $newCollections = $idx->updateMainCollection(array_unique($idxCollectionNames));
-            foreach ($idxCollection as $idx) {
-                $idxCollectionName = $idx->getData('collection');
-                $collectionId = array_search($idxCollectionName,$newCollections);
-                $resource = Mage::getSingleton('core/resource');
-                $connection = $resource->getConnection('core_write');
-                $tableName = $resource->getTableName('import_product_idx');
-                $condition = '`index` = '.$idx->index;
-                $query = "UPDATE `{$tableName}` SET `collection_id` = {$collectionId} WHERE {$condition}";
-                $connection->query($query); 
-            }
+            $idx->updateCollectionId();
 
             Mage::getSingleton('adminhtml/session')->addSuccess('Collection is fine now');
             $this->_redirect('*/*/');
@@ -199,16 +182,8 @@ class Uday_Idx_Adminhtml_IdxController extends Mage_Adminhtml_Controller_Action
             }
 
             $newProducts = $idx->updateMainProduct(array_unique($idxSku));
-            foreach ($idxCollection as $idx) {
-                $idxSku = $idx->getData('sku');
-                $productId = array_search($idxSku,$newProducts);
-                $resource = Mage::getSingleton('core/resource');
-                $connection = $resource->getConnection('core_write');
-                $tableName = $resource->getTableName('import_product_idx');
-                $condition = '`index` = '.$idx->index;
-                $query = "UPDATE `{$tableName}` SET `product_id` = {$productId} WHERE {$condition}";
-                $connection->query($query); 
-            }
+            $idx->updateProductId();
+            $idx->updateProductData();
             Mage::getSingleton('adminhtml/session')->addSuccess('Product is fine now');
             $this->_redirect('*/*/');
         } catch (Exception $e) {

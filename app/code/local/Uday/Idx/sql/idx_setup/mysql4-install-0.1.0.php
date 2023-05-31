@@ -24,9 +24,6 @@ $installer->run("
       UNIQUE KEY (`sku`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-    ALTER TABLE `import_product_idx` ADD  FOREIGN KEY (`collection_id`) REFERENCES `collection`(`collection_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-    ALTER TABLE `import_product_idx` ADD  FOREIGN KEY (`brand_id`) REFERENCES `brand`(`brand_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-    ALTER TABLE `import_product_idx` ADD  FOREIGN KEY (`product_id`) REFERENCES `product`(`product_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
     ");
 
