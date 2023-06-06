@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_bannergroup_edit>
+        <reference name="head">
+            <action method="addJs"><file>lib/uploader/flow.min.js</file></action>
+            <action method="addJs"><file>lib/uploader/fusty-flow.js</file></action>
+            <action method="addJs"><file>lib/uploader/fusty-flow-factory.js</file></action>
+            <action method="addJs"><file>mage/adminhtml/uploader/instance.js</file></action>
+        </reference>
+    </adminhtml_bannergroup_edit>
+</layout>
