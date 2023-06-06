@@ -18,6 +18,7 @@ class Uday_Brand_Block_Adminhtml_Brand_Edit_Tabs extends Mage_Adminhtml_Block_Wi
             'content' => $this->getLayout()->createBlock('brand/adminhtml_brand_edit_tab_form')->toHtml(),
         ));
 
+
         return parent::_beforeToHtml();
     }
 }

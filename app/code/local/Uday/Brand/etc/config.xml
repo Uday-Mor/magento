@@ -1,26 +1,10 @@
 <config>
     <modules>
         <Uday_Brand>    
-            <version>1.0.1</version>
+            <version>0.1.1</version>
         </Uday_Brand>
     </modules>
-    <frontend>
-        <!-- <routers>
-            <Brand>
-                <use>standard</use>
-                <args>
-                    <module>Uday_Brand</module>
-                    <frontName>brand</frontName>
-                </args>
-            </Brand>
-        </routers> -->
-        <layout>
-            <updates>
-                <Brand module="Uday_Brand">
-                    <file>Uday_Brand.xml</file>
-                </Brand>
-            </updates>
-        </layout>
+    <frontend>   
     </frontend>
     <global>
         <models>
@@ -66,38 +50,14 @@
             <brand>
                 <class>Uday_Brand_Block</class>
             </brand>
-            <adminhtml>
-                <rewrite>
-                    <catalog_product_edit_tab_attributes>Uday_Brand_Block_Adminhtml_Catalog_Product_Edit_Tab_Attributes</catalog_product_edit_tab_attributes>
-                </rewrite>
-            </adminhtml>    
         </blocks>
         <helpers>
            <brand>
                   <class>Uday_brand_Helper</class>
             </brand>
         </helpers>
-        <events>
-            <adminhtml_catalog_product_edit_prepare_form>
-                <observers>
-                    <uday_brand_block_prepare_form>
-                        <class>brand/observer</class>
-                        <method>prepareCatalogForm</method>
-                    </uday_brand_block_prepare_form>
-                </observers>
-            </adminhtml_catalog_product_edit_prepare_form>
-        </events>
     </global>
     <admin>
-        <!-- <routers>
-            <adminhtml>
-                <args>
-                    <modules>
-                        <Uday_Brand>Uday_Brand_Adminhtml</Uday_Brand>
-                    </modules>
-                </args>
-            </adminhtml>
-        </routers> -->
         <routers>
             <Brand>
                 <use>admin</use>
@@ -107,12 +67,5 @@
                 </args>
             </Brand>
         </routers>
-         <layout>
-            <updates>
-                <brand>
-                    <file>brand.xml</file>
-                </brand>
-            </updates>
-        </layout>
     </admin>
 </config>
