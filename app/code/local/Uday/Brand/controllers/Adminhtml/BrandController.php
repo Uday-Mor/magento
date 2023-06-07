@@ -113,6 +113,31 @@ class Uday_Brand_Adminhtml_BrandController extends Mage_Adminhtml_Controller_Act
                 }
             }
 
+            if (isset($_FILES['banner_image']['name']) && ($_FILES['banner_image']['name'] != '')) 
+            {
+                try {
+                    $uploader = new Varien_File_Uploader('banner_image');
+                    $uploader->setAllowedExtensions(array('jpg', 'jpeg', 'gif', 'png', 'webp'));
+                    $uploader->setAllowRenameFiles(false);
+                    $uploader->setFilesDispersion(false);
+                    
+                    $path = Mage::getBaseDir('media') . DS . 'brand' . DS . 'banner' . DS;
+                    $extension = pathinfo($_FILES['banner_image']['name'], PATHINFO_EXTENSION);
+                    if ($uploader->save($path, $model->getId().'.'.$extension)) {
+                        $model->banner_image = "brand/banner/".$model->getId().".".$extension;
+                        $model->save();
+                        Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('brand')->__('Banner Image was successfully uploaded'));
+                    }
+                    
+                    // $imageName = $uploader->getUploadedFileName();
+
+                } catch (Exception $e) {
+                    Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                }
+            }
+
+            $rewrite = Mage::getModel('brand/rewrite')->prepareRewrite($model);
+
             Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('brand')->__('Brand was successfully saved'));
             Mage::getSingleton('adminhtml/session')->setFormData(false);
              
