@@ -136,7 +136,7 @@ class Uday_Brand_Adminhtml_BrandController extends Mage_Adminhtml_Controller_Act
                 }
             }
 
-            $rewrite = Mage::getModel('brand/rewrite')->prepareRewrite($model);
+            Mage::dispatchEvent('brand_save_after', array('brand' => $model));
 
             Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('brand')->__('Brand was successfully saved'));
             Mage::getSingleton('adminhtml/session')->setFormData(false);

@@ -23,6 +23,16 @@
         </layout> 
     </frontend>
     <global>
+        <events>
+            <brand_save_after>
+                <observers>
+                    <uday_brand_generate_brand_rewrite_url>
+                        <class>Uday_Brand_Model_Observer</class>
+                        <method>generateRewriteUrl</method>
+                    </uday_brand_generate_brand_rewrite_url>
+                </observers>
+            </brand_save_after>
+        </events>
         <models>
             <brand>
                 <class>Uday_Brand_Model</class>
