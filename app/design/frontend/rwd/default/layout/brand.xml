@@ -1,27 +1,25 @@
 <?xml version="1.0"?>
 <layout version="0.1.0">
     <cms_index_index translate="label">
-        <default>
-            <remove name="right"/>
-        </default>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
         <reference name="content">
             <block type="brand/brand" name="default_home_page1" template="brand/cards.phtml"/>
         </reference>
     </cms_index_index>
-    <brand_index_index>
-        <default>
-            <remove name="right"/>
-        </default>
-        <reference name="content">
-            <block type="brand/brand" name="brand_banner" template="brand/cards.phtml" />
-        </reference>
-    </brand_index_index>
     <brand_index_view>
         <default>
             <remove name="right"/>
+            <remove name="footer"/>
         </default>
         <reference name="content">
-            <block type="brand/brand" name="brand_banner" template="brand/banner.phtml" />
+            <block type="brand/brand" name="banner_page" template="brand/banner.phtml"/>
+        </reference>
+        <reference name="left">
+            <block type="brand/left" name="brand_left" template="brand/left.phtml" />
         </reference>
     </brand_index_view>
 </layout>

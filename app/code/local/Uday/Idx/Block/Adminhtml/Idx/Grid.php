@@ -17,7 +17,7 @@ class Uday_Idx_Block_Adminhtml_Idx_Grid extends Mage_Adminhtml_Block_Widget_Grid
     protected function _prepareColumns()
     {
         $this->addColumn('index', array(
-            'header'    => Mage::helper('idx')->__('Id'),
+            'header'    => Mage::helper('idx')->__('Index Id'),
             'width'     => '50px',
             'index'     => 'index',
             'type'  => 'number',
@@ -53,9 +53,19 @@ class Uday_Idx_Block_Adminhtml_Idx_Grid extends Mage_Adminhtml_Block_Widget_Grid
             'index'     => 'quantity'
         ));
 
+        $this->addColumn('brand_id', array(
+            'header'    => Mage::helper('idx')->__('Brand Id'),
+            'index'     => 'brand_id'
+        ));
+
         $this->addColumn('brand', array(
             'header'    => Mage::helper('idx')->__('Brand'),
             'index'     => 'brand'
+        ));
+
+        $this->addColumn('collection_id', array(
+            'header'    => Mage::helper('idx')->__('Collection Id'),
+            'index'     => 'collection_id'
         ));
 
         $this->addColumn('collection', array(

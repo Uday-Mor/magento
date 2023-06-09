@@ -4,14 +4,11 @@ class Uday_Idx_Block_Adminhtml_Idx_Edit extends Mage_Adminhtml_Block_Widget_Form
 {
     public function __construct()
     {
-
         $this->_objectId   = 'index';
         parent::__construct();
         $this->_blockGroup = 'idx';
         $this->_controller = 'adminhtml_idx';
-        $this->_headerText = Mage::helper('idx')->__('Manage idxs');
-
-
+        $this->_headerText = Mage::helper('idx')->__('Manage idx');
 
         if ($this->_isAllowedAction('save')) {
             $this->_updateButton('save', 'label', Mage::helper('idx')->__('Save idx'));
