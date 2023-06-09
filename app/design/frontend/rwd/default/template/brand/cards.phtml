@@ -23,14 +23,13 @@
     }
 </style>
 <div style="display:flex;">
-		<?php $url = Mage::getBaseUrl('media'); ?>
+	<?php $url = Mage::getBaseUrl('media'); ?>
 	<?php foreach ($this->getBrands() as $brand) : ?>
 	<?php $path = $url . $brand->image; ?>
     <div class="card">
-        <img src="<?php echo $path; ?>" height = "100px" width = "100px" alt="Brand 1">
-        <h3><?php echo $brand->name; ?></h3>
-        <p><?php echo $brand->description; ?></p>
-        <a href="<?php echo $this->getRewriteKey($brand); ?>">View Brand</a>
+        <a href="<?php echo $this->getRewriteKey($brand); ?>"><img src="<?php echo $path; ?>" height = "400px" width = "300px" alt="Brand 1">
+        </a>
+        <h3 align="center"><?php echo $brand->name; ?></h3>
     </div>
 	<?php endforeach; ?>
 </div>

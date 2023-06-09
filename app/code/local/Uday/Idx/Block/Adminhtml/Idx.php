@@ -2,11 +2,10 @@
 class Uday_Idx_Block_Adminhtml_Idx extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
     public function __construct()
-    {
-        
+    { 
         $this->_blockGroup = 'idx';
         $this->_controller = 'adminhtml_idx';
-        $this->_headerText = Mage::helper('idx')->__('Manage idxs');
+        $this->_headerText = Mage::helper('idx')->__('Manage idx');
 
         parent::__construct();
 
@@ -15,11 +14,7 @@ class Uday_Idx_Block_Adminhtml_Idx extends Mage_Adminhtml_Block_Widget_Grid_Cont
         } else {
             $this->_removeButton('add');
         }
-        $this->_addButton('idx_idx', array(
-        'label' => $this->__('Export Sample Csv'),
-        'onclick' => "setLocation('{$this->getUrl('*/*/download')}')",
-    ));
-        $this->_headerText = $this->__('Import Products');
+        
         $this->_addButton('brand', array(
             'label'     => Mage::helper('idx')->__('Brand'),
             'onclick'   => "setLocation('{$this->getUrl('*/*/brand')}')",
@@ -43,26 +38,6 @@ class Uday_Idx_Block_Adminhtml_Idx extends Mage_Adminhtml_Block_Widget_Grid_Cont
     protected function _isAllowedAction($action)
     {
         return Mage::getSingleton('admin/session')->isAllowed('idx/adminhtml_idx/' . $action);
-    }
-
-    protected function _prepareLayout()
-    {
-        $form = new Varien_Data_Form(array(
-            'id'        => 'import_form',
-            'action'    => $this->getUrl('*/*/import'),
-            'method'    => 'post',
-            'enctype'   => 'multipart/form-data'
-        ));
-
-        $form->addField('csv_file', 'file', array(
-            'name'      => 'csv_file',
-            'label'     => $this->__('CSV File'),
-            'title'     => $this->__('CSV File'),
-            'required'  => true,
-        ));
-
-        $this->setForm($form);
-        return parent::_prepareLayout();
     }
 
 }

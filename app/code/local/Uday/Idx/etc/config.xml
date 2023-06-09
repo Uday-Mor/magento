@@ -6,13 +6,7 @@
         </Uday_Idx>
     </modules>
      <frontend>
-        <layout>
-            <updates>
-                <idx module="Uday_Idx">
-                    <!-- <file>Uday_Product.xml</file> -->
-                </idx>
-            </updates>
-        </layout>
+        
     </frontend>
     <global>
         <models>
