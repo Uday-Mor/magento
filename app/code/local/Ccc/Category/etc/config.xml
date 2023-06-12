@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Ccc_Category>
-            <version>1.0.0</version>
+            <version>1.1.0</version>
         </Ccc_Category>
     </modules>
     <global>
@@ -45,6 +45,11 @@
             <category>
                 <class>Ccc_Category_Block</class>
             </category>
+            <adminhtml>
+                <rewrite>
+                    <catalog_category_tree>Ccc_Category_Block_Adminhtml_Catalog_Category_Tree</catalog_category_tree>
+                </rewrite>
+            </adminhtml>
         </blocks>
         <helpers>
             <category>
@@ -63,4 +68,31 @@
             </category>
         </routers>
     </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <category>
+                    <file>category.xml</file>
+                </category>
+            </updates>
+        </layout>
+    </adminhtml>
+    <frontend>
+        <layout>
+            <updates>
+                <category>
+                    <file>category.xml</file>
+                </category>
+            </updates>
+        </layout>
+    </frontend>
+    <routers>
+        <category>
+            <use>standard</use>
+            <args>
+                <module>Uday_Category</module>
+                <frontName>category</frontName>
+            </args>
+        </category>
+    </routers>
 </config>
