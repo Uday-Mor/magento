@@ -1,44 +1,10 @@
 <?php
-/**
- * Magento
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magento.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magento.com for more information.
- *
- * @category    Mage
- * @package     Mage_Adminhtml
- * @copyright  Copyright (c) 2006-2020 Magento, Inc. (http://www.magento.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
 
-/**
- * Adminhtml customer grid block
- *
- * @category   Mage
- * @package    Mage_Adminhtml
- * @author      Magento Core Team <core@magentocommerce.com>
- */
 class UM_Vendor_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
-
-
     public function __construct()
     {
         parent::__construct();
-        // $this->setTemplate('vendor/grid.phtml');
         $this->setId('vendorAdminhtmlVendorGrid');
         $this->setDefaultSort('vendor_id');
         $this->setDefaultDir('ASC');
@@ -47,7 +13,6 @@ class UM_Vendor_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_Widget_
    protected function _prepareCollection()
     {
         $collection = Mage::getModel('vendor/vendor')->getCollection();
-        /* @var $collection Mage_Cms_Model_Mysql4_Page_Collection */
         $this->setCollection($collection);
 
         return parent::_prepareCollection();
@@ -60,19 +25,13 @@ class UM_Vendor_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_Widget_
         $this->addColumn('first_name', array(
             'header'    => Mage::helper('vendor')->__('First Name'),
             'align'     => 'left',
-            'index'     => 'first_name',
+            'index'     => 'first_name'
         ));
 
         $this->addColumn('last_name', array(
             'header'    => Mage::helper('vendor')->__('Last Name'),
             'align'     => 'left',
             'index'     => 'last_name'
-        ));
-
-        $this->addColumn('mobile', array(
-            'header'    => Mage::helper('vendor')->__('mobile'),
-            'align'     => 'left',
-            'index'     => 'mobile'
         ));
 
         $this->addColumn('email', array(
@@ -85,15 +44,23 @@ class UM_Vendor_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_Widget_
             'header'    => Mage::helper('vendor')->__('Gender'),
             'align'     => 'left',
             'index'     => 'gender',
-            'renderer'  => 'UM_Vendor_Block_Adminhtml_Vendor_Grid_Renderer_Gender'
+            'renderer'  => 'UM_Vendor_Block_Adminhtml_Vendor_Grid_Renderer_Gender',
         ));
 
-        return parent::_prepareColumns();
-    }
+        $this->addColumn('mobile', array(
+            'header'    => Mage::helper('vendor')->__('Mobile'),
+            'align'     => 'left',
+            'index'     => 'mobile'
+        ));
 
-    public function getRowUrl($row)
-    {
-        return $this->getUrl('*/*/edit', array('vendor_id' => $row->getId()));
+        $this->addColumn('status', array(
+            'header'    => Mage::helper('vendor')->__('status'),
+            'align'     => 'left',
+            'index'     => 'status',
+            'renderer'  => 'UM_Vendor_Block_Adminhtml_Vendor_Grid_Renderer_Status',
+        ));
+        
+        return parent::_prepareColumns();
     }
 
     protected function _prepareMassaction()
@@ -106,6 +73,37 @@ class UM_Vendor_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_Widget_
              'url'      => $this->getUrl('*/*/massDelete'),
              'confirm'  => Mage::helper('vendor')->__('Are you sure?')
         ));
+
+        $this->getMassactionBlock()->addItem('update_status', array(
+            'label' => Mage::helper('vendor')->__('Update Status'),
+            'url' => $this->getUrl('*/*/massStatus'),
+            'confirm' => Mage::helper('vendor')->__('Are you sure you want to update the status?'),
+            'additional' => array(
+                'status' => array(
+                    'name' => 'status',
+                    'type' => 'select',
+                    'class' => 'required-entry',
+                    'label' => Mage::helper('vendor')->__('Status'),
+                    'values' => array(
+                        array(
+                            'value' => '1',
+                            'label' => Mage::helper('vendor')->__('Active')
+                        ),
+                        array(
+                            'value' => '0',
+                            'label' => Mage::helper('vendor')->__('Inactive')
+                        )
+                    )
+                )
+            )
+        ));
+
         return $this;
     }
+
+    public function getRowUrl($row)
+    {
+        return $this->getUrl('*/*/edit', array('vendor_id' => $row->getId()));
+    }
+   
 }

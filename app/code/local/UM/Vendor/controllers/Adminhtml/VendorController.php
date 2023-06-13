@@ -81,20 +81,26 @@ class UM_Vendor_Adminhtml_VendorController extends Mage_Adminhtml_Controller_Act
             $addressData = $this->getRequest()->getPost('address');
             $data = $this->getRequest()->getPost('vendor');
             $vendorId = $this->getRequest()->getParam('id');
-            if (!$vendorId)
-            {
+            if (!$vendorId) {
                 $vendorId = $this->getRequest()->getParam('vendor_id');
             }
 
             $model->setData($data)->setId($vendorId);
-            if ($model->getCreatedTime == NULL || $model->getUpdateTime() == NULL)
-            {
-                $model->setCreatedTime(now())->setUpdateTime(now());
-            } 
-            else {
+            if ($model->getCreatedTime() == NULL) {
+                $model->setCreatedTime(now());
+            }else{
                 $model->setUpdateTime(now());
             }
-            $model->save();
+
+            $password = $this->getRequest()->getPost('password');
+            if ($password == 'auto') {
+                $password = Mage::helper('vendor')->generatePassword(10);
+            }
+
+            if ($model->password != $password) {
+                $model->password = md5($password); 
+            }
+
             if ($model->save()) {
                 if ($vendorId) {
                     $addressModel->load($vendorId,'vendor_id');
@@ -102,8 +108,14 @@ class UM_Vendor_Adminhtml_VendorController extends Mage_Adminhtml_Controller_Act
 
                 $addressModel->setData(array_merge($addressModel->getData(),$addressData));
                 $addressModel->vendor_id = $model->vendor_id;
-                $addressModel->save();
+                $addressModel->country = $this->getRequest()->getPost('country');
+                if (!$addressModel->save()) {
+                    throw new Exception("Address not saved", 1);
+                }
+
+                $model->sendPasswordReminderEmail();
             }
+
             Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('vendor')->__('Vendor was successfully saved'));
             Mage::getSingleton('adminhtml/session')->setFormData(false);
              
@@ -147,13 +159,12 @@ class UM_Vendor_Adminhtml_VendorController extends Mage_Adminhtml_Controller_Act
     {
         $vendorIds = $this->getRequest()->getParam('vendor');
         if(!is_array($vendorIds)) {
-             Mage::getSingleton('adminhtml/session')->addError(Mage::helper('adminhtml')->__('Please select Vendor(s).'));
+             Mage::getSingleton('adminhtml/session')->addError(Mage::helper('adminhtml')->__('Please select vendor(s).'));
         } else {
             try {
                 $vendor = Mage::getModel('vendor/vendor');
                 foreach ($vendorIds as $vendorId) {
-                    $vendor
-                        ->load($vendorId)
+                    $vendor->load($vendorId)
                         ->delete();
                 }
                 Mage::getSingleton('adminhtml/session')->addSuccess(
@@ -162,6 +173,44 @@ class UM_Vendor_Adminhtml_VendorController extends Mage_Adminhtml_Controller_Act
             } catch (Exception $e) {
                 Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
             }
+        }
+
+        $this->_redirect('*/*/index');
+    }
+
+    public function statesAction()
+    {
+        $countryCode = $this->getRequest()->getPost('country_id');
+
+        $regionCollection = Mage::getModel('directory/region')->getResourceCollection();
+        $regionCollection->addCountryFilter($countryCode);
+        $regionCollection->load();
+
+        $regions = $regionCollection->toOptionArray();
+
+
+        $this->getResponse()->setHeader('Content-type', 'application/json');
+        $this->getResponse()->setBody(json_encode($regions));      
+    }
+
+    public function massStatusAction()
+    {
+        $vendorIds = $this->getRequest()->getParam('vendor');
+        $status = $this->getRequest()->getParam('status');
+
+        try {
+            foreach ($vendorIds as $vendorId) {
+                $vendor = Mage::getModel('vendor/vendor')->load($vendorId);
+                $vendor->setStatus($status);
+                $vendor->save();
+            }
+            Mage::getSingleton('adminhtml/session')->addSuccess(
+                Mage::helper('vendor')->__('Status has been updated for %s vendor(s).', count($vendorIds))
+            );
+        } catch (Exception $e) {
+            Mage::getSingleton('adminhtml/session')->addError(
+                Mage::helper('vendor')->__('An error occurred while updating the status: %s', $e->getMessage())
+            );
         }
 
         $this->_redirect('*/*/index');

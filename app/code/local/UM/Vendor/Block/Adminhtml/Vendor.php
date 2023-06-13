@@ -21,7 +21,7 @@ class UM_Vendor_Block_Adminhtml_Vendor extends Mage_Adminhtml_Block_Widget_Grid_
 
     protected function _isAllowedAction($action)
     {
-        return Mage::getSingleton('admin/session')->isAllowed('vendor/adminhtml_vendor/' . $action);
+        return Mage::getSingleton('admin/session')->isAllowed('vendors/adminhtml_vendor/' . $action);
     }
 
 }

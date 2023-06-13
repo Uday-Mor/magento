@@ -15,29 +15,72 @@ class UM_Vendor_Block_Adminhtml_Vendor_Edit_Tab_Addresses extends Mage_Adminhtml
             'name' => 'address[address]',
         ));
 
+        $fieldset->addField('postal_code', 'text', array(
+            'label' => Mage::helper('vendor')->__('Postal Code'),
+            'required' => false,
+            'name' => 'address[postal_code]',
+        ));
+
         $fieldset->addField('city','text', array(
             'label' => Mage::helper('vendor')->__('City'),
             'required' => false,
             'name' => 'address[city]'
         ));
 
-        $fieldset->addField('state', 'text', array(
-            'label' => Mage::helper('vendor')->__('State'),
-            'required' => false,
-            'name' => 'address[state]',
-        ));
-
-        $fieldset->addField('country','text', array(
+        $countryOptions = Mage::getModel('directory/country')->getResourceCollection()
+            ->loadByStore()
+            ->toOptionArray();
+        $fieldset->addField('country', 'select', array(
+            'name' => 'address[country]',
             'label' => Mage::helper('vendor')->__('Country'),
             'required' => false,
-            'name' => 'address[country]'
+            'values' => $countryOptions,
+            'onchange' => 'getStates(this.value)'
         ));
 
-        $fieldset->addField('zipcode','text', array(
-            'label' => Mage::helper('vendor')->__('Zipcode'),
-            'required' => false,
-            'name' => 'address[zipcode]'
+        $stateOptions = array();
+        $fieldset->addField('state', 'select', array(
+            'label'    => 'State',
+            'name'     => 'address[state]',
+            'values'   => $stateOptions,
         ));
+
+        $countryField = $form->getElement('country');
+        $registry = Mage::registry('address_edit')->getData();
+        $countryField->setValue($registry['country']);
+        $countryField->setAfterElementHtml('
+            <script type="text/javascript">
+                document.observe("dom:loaded", function() {
+                    getStates("' . $registry['country'] . '");
+                });
+                function getStates(countryId) {
+                    var url = \'' . $this->getUrl('vendor/adminhtml_vendor/states') . '\';
+                    
+                    var stateElement = $("state");
+                    new Ajax.Request(url, {
+                        method: "post",
+                        parameters: {
+                            country_id: countryId
+                        },
+                        onSuccess: function(response) {
+                            var stateOptions = JSON.parse(response.responseText);
+                            var optionsHtml = "";
+                            stateOptions.forEach(function(option) {
+                                optionsHtml += "<option value=\"" + option.value + "\"";
+                                if (option.value == "' . $registry['state'] . '") {
+                                    optionsHtml += " selected";
+                                }
+                                optionsHtml += ">" + option.label + "</option>";
+                            });
+                            stateElement.update(optionsHtml);
+                        },
+                        onFailure: function() {
+                            stateElement.update("");
+                        }
+                    });
+                }
+            </script>
+        ');
 
         if ( Mage::getSingleton('adminhtml/session')->getVendorData() )
         {
@@ -51,9 +94,3 @@ class UM_Vendor_Block_Adminhtml_Vendor_Edit_Tab_Addresses extends Mage_Adminhtml
     }
 
 }
-
-
-
-
-
-    
