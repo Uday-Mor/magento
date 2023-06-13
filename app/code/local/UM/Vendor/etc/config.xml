@@ -1,24 +1,15 @@
 <config>
     <modules>
         <UM_Vendor>    
-            <version>1.0.1</version>
+            <version>1.0.0</version>
         </UM_Vendor>
     </modules>
     <frontend>
-        <!-- <routers>
-            <Vendor>
-                <use>standard</use>
-                <args>
-                    <module>UM_Vendor</module>
-                    <frontName>vendor</frontName>
-                </args>
-            </Vendor>
-        </routers> -->
         <layout>
             <updates>
-                <Vendor module="UM_Vendor">
-                    <file>UM_Vendor.xml</file>
-                </Vendor>
+                <vendor>
+                    <file>vendor.xml</file>
+                </vendor>
             </updates>
         </layout>
     </frontend>
@@ -72,17 +63,17 @@
                   <class>UM_vendor_Helper</class>
             </vendor>
         </helpers>
+        <template>
+            <email>
+                <vendor_welcome_email_template module="vendor">
+                    <label>Welcome Email Template</label>
+                    <file>vendor-new-send.html</file>
+                    <type>html</type>
+                </vendor_welcome_email_template>
+            </email>
+        </template>
     </global>
     <admin>
-        <!-- <routers>
-            <adminhtml>
-                <args>
-                    <modules>
-                        <UM_Vendor>UM_Vendor_Adminhtml</UM_Vendor>
-                    </modules>
-                </args>
-            </adminhtml>
-        </routers> -->
         <routers>
             <Vendor>
                 <use>admin</use>
@@ -92,12 +83,5 @@
                 </args>
             </Vendor>
         </routers>
-         <layout>
-            <updates>
-                <vendor>
-                    <file>vendor.xml</file>
-                </vendor>
-            </updates>
-        </layout>
     </admin>
 </config>
