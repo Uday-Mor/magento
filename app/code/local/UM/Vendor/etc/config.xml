@@ -70,6 +70,11 @@
                     <file>vendor-new-send.html</file>
                     <type>html</type>
                 </vendor_welcome_email_template>
+                <vendor_verification_email_template module="vendor">
+                    <label>Confirmation Email Template</label>
+                    <file>vendor_account_confirmation.html</file>
+                    <type>html</type>
+                </vendor_verification_email_template>
             </email>
         </template>
     </global>
