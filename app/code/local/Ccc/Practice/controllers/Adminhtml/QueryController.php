@@ -1,5 +1,5 @@
 <?php
-class Ccc_Practice_Adminhtml_QueryController extends Mage_Core_Controller_Front_Action
+class Ccc_Practice_Adminhtml_QueryController extends Mage_Adminhtml_Controller_Action
 {
     public function indexAction()
     {
@@ -60,5 +60,61 @@ class Ccc_Practice_Adminhtml_QueryController extends Mage_Core_Controller_Front_
         // );
 
         die;
+    }
+
+    public function firstAction()
+    {
+        $this->loadLayout();
+        $this->_addContent($this->getLayout()->createBlock('practice/adminhtml_query_grid1', 'query'));
+        $this->renderLayout();
+    }
+
+    public function secoundAction()
+    {
+        $this->loadLayout();
+        $this->_addContent($this->getLayout()->createBlock('practice/adminhtml_query_grid2', 'query2'));
+        $this->renderLayout();
+    }
+
+    public function thirdAction()
+    {
+        $this->loadLayout();
+        $this->_addContent($this->getLayout()->createBlock('practice/adminhtml_query_grid3', 'query2'));
+        $this->renderLayout();
+    }
+
+    public function fourthAction()
+    {
+        $this->loadLayout();
+        $this->_addContent($this->getLayout()->createBlock('practice/adminhtml_query_grid4', 'query2'));
+        $this->renderLayout();
+    }
+    
+    public function fifthAction()
+    {
+        $this->loadLayout();
+        $this->_addContent($this->getLayout()->createBlock('practice/adminhtml_query_grid5', 'query2'));
+        $this->renderLayout();
+    }
+
+    public function sixthAction()
+    {
+        $this->loadLayout();
+        $this->_addContent($this->getLayout()->createBlock('practice/adminhtml_query_grid6', 'query2'));
+        $this->renderLayout();
+    }
+
+    public function seventhAction()
+    {
+        $this->loadLayout();
+        $this->_addContent($this->getLayout()->createBlock('practice/adminhtml_query_grid7', 'query2'));
+        $this->renderLayout();
+    }
+
+    public function eighthAction()
+    {
+        $this->loadLayout();
+        $this->_addContent($this->getLayout()->createBlock('practice/adminhtml_query_grid8', 'query2'));
+        $this->renderLayout();
     }
 }

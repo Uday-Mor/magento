@@ -15,6 +15,11 @@
         </layout>
     </frontend>
     <global>
+        <blocks>
+            <practice>
+                <class>Ccc_Practice_Block</class>
+            </practice>
+        </blocks>
         <models>
             <practice>
                 <class>Ccc_Practice_Model</class>

@@ -5,11 +5,56 @@
             <title>practices</title>
             <sort_order>10</sort_order>
             <children>
-                <practice translate="title" module="practice">
-                    <title>Manage practices</title>
+                <practice1 translate="title" module="practice">
+                    <title>Manage practicees 1</title>
+                    <action>practice/adminhtml_query/first</action>
+                    <sort_order>0</sort_order>
+                </practice1>
+                <practice2 translate="title" module="practice">
+                    <title>Manage practices 2</title>
+                    <action>practice/adminhtml_query/secound</action>
+                    <sort_order>0</sort_order>
+                </practice2>
+                <practice3 translate="title" module="practice">
+                    <title>Manage practices 3</title>
+                    <action>practice/adminhtml_query/third</action>
+                    <sort_order>0</sort_order>
+                </practice3>
+                <practice4 translate="title" module="practice">
+                    <title>Manage practices 4</title>
+                    <action>practice/adminhtml_query/fourth</action>
+                    <sort_order>0</sort_order>
+                </practice4>
+                <practice5 translate="title" module="practice">
+                    <title>Manage practices 5</title>
+                    <action>practice/adminhtml_query/fifth</action>
+                    <sort_order>0</sort_order>
+                </practice5>
+                <practice6 translate="title" module="practice">
+                    <title>Manage practices 6</title>
+                    <action>practice/adminhtml_query/sixth</action>
+                    <sort_order>0</sort_order>
+                </practice6>
+                <practice7 translate="title" module="practice">
+                    <title>Manage practices 7</title>
+                    <action>practice/adminhtml_query/seventh</action>
+                    <sort_order>0</sort_order>
+                </practice7>
+                <practice8 translate="title" module="practice">
+                    <title>Manage practices 8</title>
+                    <action>practice/adminhtml_query/eighth</action>
+                    <sort_order>0</sort_order>
+                </practice8>
+                <practice9 translate="title" module="practice">
+                    <title>Manage practices 9</title>
                     <action>practice/adminhtml_query/index</action>
                     <sort_order>0</sort_order>
-                </practice>
+                </practice9>
+                <practice10 translate="title" module="practice">
+                    <title>Manage practices 10</title>
+                    <action>practice/adminhtml_query/index</action>
+                    <sort_order>0</sort_order>
+                </practice10>
             </children>
         </practice>
     </menu>
