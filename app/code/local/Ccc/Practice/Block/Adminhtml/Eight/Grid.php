@@ -1,22 +1,26 @@
 <?php
-class Ccc_Practice_Block_Adminhtml_Query_Grid8 extends Mage_Adminhtml_Block_Widget_Grid
+class Ccc_Practice_Block_Adminhtml_Eight_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
+    public $_query = null;
+    
     public function __construct()
     {
         parent::__construct();
         $this->setId('queryAdminhtmlQueryGrid');
+        $this->_prepareCollection();
     }
 
     protected function _prepareCollection()
     {
         $products = Mage::getModel('catalog/product')->getCollection();
-        $products->getSelect()
+        $query = $products->getSelect()
             ->joinLeft(
                 array('oi' => Mage::getSingleton('core/resource')->getTableName('sales/order_item')),
                 'e.entity_id = oi.product_id',
                 array('sold_quantity' => 'SUM(oi.qty_ordered)')
             )
             ->group('e.entity_id');
+        $this->_query = $query;
         $this->setCollection($products);
         return parent::_prepareCollection();
     }
