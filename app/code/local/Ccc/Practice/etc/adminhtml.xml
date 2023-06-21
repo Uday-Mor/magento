@@ -47,12 +47,12 @@
                 </practice8>
                 <practice9 translate="title" module="practice">
                     <title>Manage practices 9</title>
-                    <action>practice/adminhtml_query/index</action>
+                    <action>practice/adminhtml_query/ninth</action>
                     <sort_order>0</sort_order>
                 </practice9>
                 <practice10 translate="title" module="practice">
                     <title>Manage practices 10</title>
-                    <action>practice/adminhtml_query/index</action>
+                    <action>practice/adminhtml_query/tenth</action>
                     <sort_order>0</sort_order>
                 </practice10>
             </children>

@@ -5,7 +5,7 @@
             <block type="category/category" name="default_home_page" template="category/cards.phtml" after="default_home_page1" />
         </reference>
     </cms_index_index>
-    <category_index_view>
+    <!-- <category_index_view>
         <default>
             <remove name="right"/>
             <remove name="footer"/>
@@ -16,5 +16,5 @@
         <reference name="left">
             <block type="category/left" name="category_left" template="category/left.phtml" />
         </reference>
-    </category_index_view>
+    </category_index_view> -->
 </layout>

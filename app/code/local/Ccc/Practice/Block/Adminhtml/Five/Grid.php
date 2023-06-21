@@ -1,10 +1,13 @@
 <?php
-class Ccc_Practice_Block_Adminhtml_Query_Grid5 extends Mage_Adminhtml_Block_Widget_Grid
+class Ccc_Practice_Block_Adminhtml_Five_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
+    public $_query = null;
+
     public function __construct()
     {
         parent::__construct();
         $this->setId('queryAdminhtmlQueryGrid');
+        $this->_prepareCollection();
     }
 
     protected function _prepareCollection()
@@ -12,13 +15,14 @@ class Ccc_Practice_Block_Adminhtml_Query_Grid5 extends Mage_Adminhtml_Block_Widg
         $collection = Mage::getModel('catalog/product')->getCollection()
             ->addAttributeToSelect('*');
 
-        $collection->getSelect()->joinLeft(
+        $query = $collection->getSelect()->joinLeft(
             array('mg' => $collection->getTable('catalog/product_attribute_media_gallery')),
             'mg.entity_id = e.entity_id',
             array('media_count' => 'COUNT(mg.value_id)')
-        );
+        )
+        ->group('e.entity_id');
 
-        $collection->getSelect()->group('e.entity_id');
+        $this->_query = $query;
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }

@@ -1,5 +1,5 @@
 <?php
-class Ccc_Practice_Block_Adminhtml_Query_Grid4 extends Mage_Adminhtml_Block_Widget_Grid
+class Ccc_Practice_Block_Adminhtml_Four_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
     public function __construct()
     {
@@ -36,18 +36,21 @@ class Ccc_Practice_Block_Adminhtml_Query_Grid4 extends Mage_Adminhtml_Block_Widg
             'header'    => Mage::helper('practice')->__('Image'),
             'align'     => 'left',
             'index'     => 'image',
+            'renderer'  =>'ccc_practice_block_adminhtml_four_renderer_image'
         ));
 
         $this->addColumn('thumbnail', array( 
             'header'    => Mage::helper('practice')->__('Thumbnail'),
             'align'     => 'left',
             'index'     => 'thumbnail',
+            'renderer'  =>'Ccc_Practice_Block_Adminhtml_Four_Renderer_Smallimage'
         ));
         
         $this->addColumn('small_image', array( 
             'header'    => Mage::helper('practice')->__('Small Image'),
             'align'     => 'left',
             'index'     => 'small_image',
+            'renderer'  =>'Ccc_Practice_Block_Adminhtml_Four_Renderer_Thumbnail'
         ));
         return parent::_prepareColumns();
     }
