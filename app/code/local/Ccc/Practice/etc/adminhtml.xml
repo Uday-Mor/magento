@@ -55,6 +55,11 @@
                     <action>practice/adminhtml_query/tenth</action>
                     <sort_order>0</sort_order>
                 </practice10>
+                <practice10 translate="title" module="practice">
+                    <title>Manage CSV</title>
+                    <action>practice/adminhtml_csv/index</action>
+                    <sort_order>0</sort_order>
+                </practice10>
             </children>
         </practice>
     </menu>

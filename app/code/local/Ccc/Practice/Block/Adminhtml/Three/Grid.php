@@ -12,6 +12,36 @@ class Ccc_Practice_Block_Adminhtml_Three_Grid extends Mage_Adminhtml_Block_Widge
 
     protected function _prepareCollection()
     {
+
+
+
+
+        $_data = array();
+        $row = ['attribute_code'=>'code1','lable'=>'Code1','option'=>'option1'];
+        $row2 = ['attribute_code'=>'code1','lable'=>'Code1','option'=>'option2'];
+        $row3 = ['attribute_code'=>'code1','lable'=>'Code1','option'=>'option3'];
+        if(!array_key_exists($row["attribute_code"], $_data))
+        {
+            $_data[$row["attribute_code"]] = array();
+        }
+        if(!array_key_exists($row2["attribute_code"], $_data))
+        {
+            $_data[$row2["attribute_code"]] = array();
+        }
+        if(!array_key_exists($row3["attribute_code"], $_data))
+        {
+            $_data[$row3["attribute_code"]] = array();
+        }
+        $_data[$row["attribute_code"]][] = $row["option"];
+        $_data[$row2["attribute_code"]][] = $row2["option"];
+        $_data[$row3["attribute_code"]][] = $row3["option"];
+
+        echo "<pre>";
+        print_r($_data);
+        die;
+
+
+
         $attributeCollection = Mage::getModel('eav/entity_attribute')->getCollection();
         $query = $attributeCollection->getSelect()->joinLeft(
             array('option_count_table' => $attributeCollection->getTable('eav/attribute_option')),
